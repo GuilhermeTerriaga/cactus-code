@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
-      POSTGRES_DB: suspiciousCat
+      POSTGRES_DB: suspiciouscat
       PGDATA: /data/postgres
     volumes:
       - "postgres:/data/postgres"

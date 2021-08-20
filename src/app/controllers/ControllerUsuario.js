@@ -1,4 +1,6 @@
+import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
+import autConfig from '../../config/auth';
 import Usuario from '../models/Usuario';
 import Arquivo from '../models/Arquivo';
 
@@ -24,6 +26,9 @@ class ControllerUsuario {
       id,
       apelido,
       email,
+      token: jwt.sign({ id }, autConfig.secret, {
+        expiresIn: autConfig.expiresIn,
+      }),
     });
   }
 

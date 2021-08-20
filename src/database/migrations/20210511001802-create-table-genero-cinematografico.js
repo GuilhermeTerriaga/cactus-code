@@ -7,33 +7,10 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      veredito: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      titulo: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      corpo: {
-        type: Sequelize.STRING(550),
-        allowNull: false,
-      },
-      nota: {
-        type: Sequelize.REAL,
-        allowNull: false,
-      },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
     });
   },
 
-  down: async (queryInterface) => {},
+  down: async (queryInterface) => {
+    await queryInterface.dropTable('genero_cinematograficos');
+  },
 };

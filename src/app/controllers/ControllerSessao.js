@@ -12,7 +12,7 @@ class ControllerSessao {
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
-        error: 'Erro na validação dos dados enviados, manda direito Gu!',
+        erro: 'Erro na validação dos dados enviados, manda direito Gu!',
       });
     }
     const { email, senha } = req.body;
@@ -26,7 +26,7 @@ class ControllerSessao {
       return res.status(401).json({ error: 'Usuário não encontrado' });
     }
     if (!(await usuario.verificarSenha(senha))) {
-      return res.status(401).json({ error: 'Senhas não batem' });
+      return res.status(401).json({ erro: 'Senhas não batem' });
     }
     const { id, apelido, avatar } = usuario;
 
