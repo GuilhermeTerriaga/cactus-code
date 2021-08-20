@@ -1,16 +1,12 @@
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    /**
-     * Adicionar a tabela genero-cinematografico uma coluna "usuario_id"
-     */
-  },
+  up: async (queryInterface, Sequelize) =>
+    queryInterface.addCColumn('usuarios', 'genero_id', {
+      type: Sequelize.INTEGER,
+      references: { model: 'genero_cinematograficos', key: 'id' },
+      onUpdate: 'CASCADE',
+      allowNull: true,
+    }),
 
-  down: async (queryInterface) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  },
+  down: async (queryInterface) =>
+    queryInterface.removeColumn('usuarios', 'genero_id'),
 };
