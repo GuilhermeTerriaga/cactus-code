@@ -8,6 +8,7 @@ module.exports = {
         primaryKey: true,
       },
       veredito: {
+        // diz se o usuário recomenda ou não
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
