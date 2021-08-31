@@ -1,26 +1,26 @@
 version : '3.5'
 
 services:
-postgres:
-  container_name: database
-  ports:
-    - "127.0.0.1:5433:5432"
-  image: postgres
-  environment:
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: docker
-    POSTGRES_DB: suspiciouscat
-    PGDATA: /data/postgres
-  volumes:
-    - "postgres:/data/postgres"
-  networks:
-      - postgres
-  restart: unless-stopped
+  postgres:
+    container_name: database
+    ports:
+      - "127.0.0.1:5433:5432"
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: suspiciouscat
+      PGDATA: /data/postgres
+    volumes:
+      - "postgres:/data/postgres"
+    networks:
+        - postgres
+    restart: unless-stopped
 
 networks:
-postgres:
-  driver: bridge
+  postgres:
+    driver: bridge
 
 volumes:
-postgres:
+  postgres:
 
