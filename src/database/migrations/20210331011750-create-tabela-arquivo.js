@@ -11,6 +11,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      usuario_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'usuarios', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
       caminho: {
         type: Sequelize.STRING,
         allowNull: false,
