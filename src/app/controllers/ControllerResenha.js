@@ -14,13 +14,17 @@ class ControllerResenha {
         error: 'Erro na validação dos dados enviados',
       });
     }
-    const { titulo, corpo, nota, veredito } = await Resenha.create(req.body);
+    console.log(req.body);
+    const { titulo, corpo, nota, veredito, usuarioId } = await Resenha.create(
+      req.body
+    );
 
     return res.json({
       veredito,
       titulo,
       corpo,
       nota,
+      usuarioId,
     });
   }
 }
