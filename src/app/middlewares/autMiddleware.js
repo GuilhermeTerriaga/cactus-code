@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
-
 import autConfig from '../../config/auth';
 
 export default async (req, res, next) => {
@@ -16,8 +15,8 @@ export default async (req, res, next) => {
       autConfig.secret
     );
 
+    req.body.usuario_id = senhaDecodificada.id;
     req.usuarioId = senhaDecodificada.id;
-
     return next();
   } catch (error) {
     return res.status(401).json({ error: 'Token invalido' });
