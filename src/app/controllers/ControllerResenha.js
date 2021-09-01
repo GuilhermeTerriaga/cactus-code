@@ -14,7 +14,7 @@ class ControllerResenha {
         error: 'Erro na validação dos dados enviados',
       });
     }
-    console.log(req.body);
+
     const { titulo, corpo, nota, veredito, usuarioId } = await Resenha.create(
       req.body
     );
