@@ -7,7 +7,7 @@ class Resenha extends Model {
         titulo: Sequelize.STRING,
         corpo: Sequelize.STRING(550),
         veredito: Sequelize.BOOLEAN,
-        nota: Sequelize.INTEGER,
+        nota: Sequelize.FLOAT,
       },
       {
         sequelize,
