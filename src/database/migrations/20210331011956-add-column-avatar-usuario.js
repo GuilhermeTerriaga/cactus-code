@@ -6,6 +6,7 @@ module.exports = {
       onUpdate: 'CASCADE',
       onDelete: 'SET NULL',
       allowNull: true,
+      unique: true,
     }),
 
   down: async (queryInterface) =>
