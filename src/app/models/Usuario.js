@@ -9,6 +9,9 @@ class Usuario extends Model {
         email: Sequelize.STRING,
         senha: Sequelize.VIRTUAL,
         hash_senha: Sequelize.STRING,
+        emailSecundario: Sequelize.STRING,
+        personagemFav: Sequelize.STRING,
+        dtNascimento: Sequelize.DATEONLY,
       },
       {
         sequelize,
