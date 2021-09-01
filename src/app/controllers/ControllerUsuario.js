@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 import autConfig from '../../config/auth';
