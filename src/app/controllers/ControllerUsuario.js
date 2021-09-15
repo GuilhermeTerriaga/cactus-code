@@ -19,10 +19,7 @@ class ControllerUsuario {
     const usuarioExistente = await Usuario.findOne({
       where: { email: req.body.email },
     });
-    const avatarExistente = await Usuario.findOne({
-      where: { arquivo_id: req.body.arquivo_id },
-    });
-    if (usuarioExistente || avatarExistente) {
+    if (usuarioExistente) {
       return res.status(400).json({ erro: 'Usuário já existente' });
     }
     const { id, apelido, email, arquivo_id } = await Usuario.create(req.body);
@@ -54,7 +51,6 @@ class ControllerUsuario {
     });
 
     if (!(await schema.isValid(req.body))) {
-      console.log('ashdaujsduahduah');
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
     }
     const { email, senhaAntiga } = req.body;
