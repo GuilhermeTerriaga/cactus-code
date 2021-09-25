@@ -133,7 +133,15 @@ class ControllerUsuario {
 
   async show(req, res) {
     const usuario = await Usuario.findByPk(req.usuarioId, {
-      attributes: ['id', 'apelido', 'email', 'arquivo_id'],
+      attributes: [
+        'id',
+        'apelido',
+        'email',
+        'arquivo_id',
+        'dtNascimento',
+        'emailSecundario',
+        'personagemFav',
+      ],
       include: [
         {
           model: Arquivo,
