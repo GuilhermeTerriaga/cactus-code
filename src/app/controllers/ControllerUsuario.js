@@ -86,7 +86,15 @@ class ControllerUsuario {
 
   async index(req, res) {
     const usuario = await Usuario.findAll({
-      attributes: ['id', 'apelido', 'email', 'arquivo_id'],
+      attributes: [
+        'id',
+        'apelido',
+        'email',
+        'arquivo_id',
+        'dtNascimento',
+        'emailSecundario',
+        'personagemFav',
+      ],
       include: [
         {
           model: Arquivo,
