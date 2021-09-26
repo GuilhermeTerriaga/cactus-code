@@ -146,7 +146,7 @@ class ControllerUsuario {
         {
           model: Arquivo,
           as: 'avatar',
-          attributes: ['nome', 'caminho', 'url'],
+          attributes: ['url'],
         },
       ],
     });
