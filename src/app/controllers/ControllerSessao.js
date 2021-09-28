@@ -1,13 +1,15 @@
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 import * as Yup from 'yup';
-import Usuario from '../models/Usuario';
-import Arquivo from '../models/Arquivo';
 import autConfig from '../../config/auth';
+import Arquivo from '../models/Arquivo';
+import Usuario from '../models/Usuario';
 
 class ControllerSessao {
   async store(req, res) {
     const schema = Yup.object().shape({
-      email: Yup.string().email().required(),
+      email: Yup.string().email(),
+      apelido: Yup.string(),
       senha: Yup.string().required(),
     });
     if (!(await schema.isValid(req.body))) {
@@ -15,13 +17,15 @@ class ControllerSessao {
         erro: 'Erro na validação dos dados enviados, manda direito Gu!',
       });
     }
-    const { email, senha } = req.body;
-    const usuario = await Usuario.findOne({
-      where: { email },
-      include: [
-        { model: Arquivo, as: 'avatar', attributes: ['id', 'caminho', 'url'] },
-      ],
-    });
+    const { email, senha, apelido } = req.body;
+    if(!apelido || !email){
+      const usuario = await Usuario.findOne({
+        where: { [Op.or]: [ {apelido }, { email } ] },
+        include: [
+          { model: Arquivo, as: 'avatar', attributes: ['id', 'caminho', 'url'] },
+        ],
+      });
+    }
     if (!usuario) {
       return res.status(401).json({ error: 'Usuário não encontrado' });
     }
