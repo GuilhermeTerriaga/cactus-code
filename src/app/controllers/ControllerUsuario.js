@@ -49,10 +49,10 @@ class ControllerUsuario {
   async update(req, res) {
     const schema = Yup.object().shape({
       apelido: Yup.string(),
-      dtNascimento: Yup.date().required(),
-      personagemFav: Yup.string().required(),
-      emailSecundario: Yup.string().email().required(),
       email: Yup.string().email().required(),
+      emailSecundario: Yup.string().email(),
+      personagemFav: Yup.string(),
+      dtNascimento: Yup.date(),
       senhaAntiga: Yup.string().min(8),
       senha: Yup.string()
         .min(6)
@@ -67,20 +67,21 @@ class ControllerUsuario {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
     }
-    const { email, senhaAntiga, emailSecundario } = req.body;
+    const { email, senhaAntiga } = req.body;
+    const { emailSecundario } = req.body;
 
     const usuario = await Usuario.findByPk(req.usuarioId);
     if (email !== usuario.email) {
       const usuarioExistente = await Usuario.findOne({ where: { email } });
       if (usuarioExistente) {
-        return res.status(400).json({ erro: 'Email já em uso' });
+        return res.status(400).json({ erro: 'Usuario já existente' });
       }
     } else if (emailSecundario !== usuario.emailSecundario) {
       const usuarioExistente = await Usuario.findOne({
         where: { emailSecundario },
       });
       if (usuarioExistente) {
-        return res.status(400).json({ erro: 'Email já em uso' });
+        return res.status(400).json({ erro: 'Usuario já existente' });
       }
     }
     if (senhaAntiga && !(await usuario.verificarSenha(senhaAntiga))) {
@@ -105,12 +106,11 @@ class ControllerUsuario {
     });
     return res.json({
       id,
-      apelido,
-      email,
-      emailSecundario,
-      arquivo_id,
       personagemFav,
       dtNascimento,
+      apelido,
+      email,
+      arquivo_id,
     });
   }
 
