@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import ControllerArquivo from './app/controllers/ControllerArquivo';
+import ControllerListas from './app/controllers/ControllerListas';
 import ControllerResenha from './app/controllers/ControllerResenha';
 import SessionController from './app/controllers/ControllerSessao';
 // import das controladoras
@@ -24,6 +25,7 @@ routes.get('/users', ControllerUsuario.index); // mostra todos os usuários do s
 
 // a partir do use(autMiddleware) necessitará
 routes.use(autMiddleware);
+routes.post('/list', ControllerListas.store); // Guarda Listas
 
 routes.post('/review', ControllerResenha.store); // Guarda Resenha
 

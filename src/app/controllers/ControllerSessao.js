@@ -18,21 +18,38 @@ class ControllerSessao {
       });
     }
     const { email, senha, apelido } = req.body;
-    if(!apelido || !email){
-      const usuario = await Usuario.findOne({
-        where: { [Op.or]: [ {apelido }, { email } ] },
-        include: [
-          { model: Arquivo, as: 'avatar', attributes: ['id', 'caminho', 'url'] },
+
+    const usuario = await Usuario.findOne({
+      where: {
+        [Op.or]: [
+          {
+            email: {
+              [Op.eq]: email,
+            },
+          },
+          {
+            apelido: {
+              [Op.eq]: apelido,
+            },
+          },
         ],
-      });
-    }
+      },
+      include: [
+        {
+          model: Arquivo,
+          as: 'avatar',
+          attributes: ['id', 'caminho', 'url'],
+        },
+      ],
+    });
+
     if (!usuario) {
       return res.status(401).json({ error: 'Usuário não encontrado' });
     }
     if (!(await usuario.verificarSenha(senha))) {
       return res.status(401).json({ erro: 'Senhas não batem' });
     }
-    const { id, apelido, avatar } = usuario;
+    const { id, avatar } = usuario;
 
     return res.json({
       usuario: {

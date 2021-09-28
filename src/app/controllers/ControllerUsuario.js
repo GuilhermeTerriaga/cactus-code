@@ -22,20 +22,16 @@ class ControllerUsuario {
     const usuarioExistente = await Usuario.findOne({
       where: { email: req.body.email },
     });
-    if (req.emailSecundario === req.email) {
+    const { emailSecundario, email } = req.body;
+    if (emailSecundario === email) {
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
     }
     if (usuarioExistente) {
       return res.status(400).json({ erro: 'Usuário já existente' });
     }
-    const {
-      id,
-      apelido,
-      email,
-      emailSecundario,
-      personagemFav,
-      dtNascimento,
-    } = await Usuario.create(req.body);
+    const { id, apelido, personagemFav, dtNascimento } = await Usuario.create(
+      req.body
+    );
 
     return res.json({
       id,
