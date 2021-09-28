@@ -9,7 +9,10 @@ class ControllerUsuario {
   async store(req, res) {
     const schema = Yup.object().shape({
       apelido: Yup.string().required(),
+      personagemFav: Yup.string().required(),
       email: Yup.string().email().required(),
+      dtNascimento: Yup.date().required(),
+      emailSecundario: Yup.string().email().required(),
       senha: Yup.string().required().min(8),
       arquivo_id: Yup.number().integer(),
     });
@@ -19,10 +22,20 @@ class ControllerUsuario {
     const usuarioExistente = await Usuario.findOne({
       where: { email: req.body.email },
     });
+    if (req.emailSecundario === req.email) {
+      return res.status(400).json({ erro: 'Erro na validação dos dados' });
+    }
     if (usuarioExistente) {
       return res.status(400).json({ erro: 'Usuário já existente' });
     }
-    const { id, apelido, email, arquivo_id } = await Usuario.create(req.body);
+    const {
+      id,
+      apelido,
+      email,
+      emailSecundario,
+      personagemFav,
+      dtNascimento,
+    } = await Usuario.create(req.body);
 
     return res.json({
       id,
@@ -31,13 +44,18 @@ class ControllerUsuario {
       token: jwt.sign({ id }, autConfig.secret, {
         expiresIn: autConfig.expiresIn,
       }),
-      arquivo_id,
+      emailSecundario,
+      personagemFav,
+      dtNascimento,
     });
   }
 
   async update(req, res) {
     const schema = Yup.object().shape({
       apelido: Yup.string(),
+      dtNascimento: Yup.date().required(),
+      personagemFav: Yup.string().required(),
+      emailSecundario: Yup.string().email().required(),
       email: Yup.string().email().required(),
       senhaAntiga: Yup.string().min(8),
       senha: Yup.string()
@@ -53,13 +71,20 @@ class ControllerUsuario {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
     }
-    const { email, senhaAntiga } = req.body;
+    const { email, senhaAntiga, emailSecundario } = req.body;
 
     const usuario = await Usuario.findByPk(req.usuarioId);
     if (email !== usuario.email) {
       const usuarioExistente = await Usuario.findOne({ where: { email } });
       if (usuarioExistente) {
-        return res.status(400).json({ erro: 'Usuario já existente' });
+        return res.status(400).json({ erro: 'Email já em uso' });
+      }
+    } else if (emailSecundario !== usuario.emailSecundario) {
+      const usuarioExistente = await Usuario.findOne({
+        where: { emailSecundario },
+      });
+      if (usuarioExistente) {
+        return res.status(400).json({ erro: 'Email já em uso' });
       }
     }
     if (senhaAntiga && !(await usuario.verificarSenha(senhaAntiga))) {
@@ -67,7 +92,13 @@ class ControllerUsuario {
     }
 
     await usuario.update(req.body);
-    const { id, apelido, arquivo_id } = await Usuario.findByPk(req.usuarioId, {
+    const {
+      id,
+      apelido,
+      arquivo_id,
+      personagemFav,
+      dtNascimento,
+    } = await Usuario.findByPk(req.usuarioId, {
       include: [
         {
           model: Arquivo,
@@ -80,7 +111,10 @@ class ControllerUsuario {
       id,
       apelido,
       email,
+      emailSecundario,
       arquivo_id,
+      personagemFav,
+      dtNascimento,
     });
   }
 
