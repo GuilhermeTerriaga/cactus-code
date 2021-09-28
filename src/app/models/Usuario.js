@@ -12,6 +12,7 @@ class Usuario extends Model {
         emailSecundario: Sequelize.STRING,
         personagemFav: Sequelize.STRING,
         dtNascimento: Sequelize.DATEONLY,
+        isAdmin: Sequelize.BOOLEAN,
       },
       {
         sequelize,
