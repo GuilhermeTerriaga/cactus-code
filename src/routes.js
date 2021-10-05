@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import ControllerArquivo from './app/controllers/ControllerArquivo';
+import ControllerListas from './app/controllers/ControllerListas';
 import ControllerResenha from './app/controllers/ControllerResenha';
 import SessionController from './app/controllers/ControllerSessao';
 // import das controladoras
@@ -19,11 +20,14 @@ routes.post('/melhorTime', (req, res) => {
 });
 routes.post('/users', ControllerUsuario.store); // se cadastrar
 routes.post('/sessions', SessionController.store); // Logar
-routes.post('/review', ControllerResenha.store); // Guarda Resenha
+
 routes.get('/users', ControllerUsuario.index); // mostra todos os usuários do sistema
 
 // a partir do use(autMiddleware) necessitará
 routes.use(autMiddleware);
+routes.post('/list', ControllerListas.store); // Guarda Listas
+
+routes.post('/review', ControllerResenha.store); // Guarda Resenha
 
 routes.put('/users', ControllerUsuario.update); // atualizar os proprios dados
 

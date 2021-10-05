@@ -1,5 +1,5 @@
-import Sequelize, { Model } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import Sequelize, { Model } from 'sequelize';
 // classe sera usada no ORM
 class Usuario extends Model {
   static init(sequelize) {
@@ -9,6 +9,10 @@ class Usuario extends Model {
         email: Sequelize.STRING,
         senha: Sequelize.VIRTUAL,
         hash_senha: Sequelize.STRING,
+        emailSecundario: Sequelize.STRING,
+        personagemFav: Sequelize.STRING,
+        dtNascimento: Sequelize.DATEONLY,
+        isAdmin: Sequelize.BOOLEAN,
       },
       {
         sequelize,
@@ -26,8 +30,7 @@ class Usuario extends Model {
 
   // associação entre a foto e o usuário
   static associate(models) {
-    this.belongsTo(models.Arquivo, { foreignKey: 'avatar_id', as: 'avatar' });
-    // this.belongsTo(models.Listas, { foreignKey: 'lista_id', as: 'lista' });
+    this.belongsTo(models.Arquivo, { foreignKey: 'arquivo_id', as: 'avatar' });
   }
   // adcionar a associação entre usuario e genero cinematografico
 
