@@ -4,7 +4,8 @@ class Resenha extends Model {
   static init(sequelize) {
     super.init(
       {
-        dados_listas: Sequelize.JSON,
+        titulo: Sequelize.STRING,
+        corpo: Sequelize.TEXT,
       },
       {
         sequelize,
