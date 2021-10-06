@@ -1,6 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Resenha extends Model {
+class Lista extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -9,6 +9,7 @@ class Resenha extends Model {
       },
       {
         sequelize,
+        tableName: 'listas',
       }
     );
     return this; // NUNCA ESQUECER O RETURN SEU ANIMAL
@@ -18,4 +19,4 @@ class Resenha extends Model {
     this.belongsTo(models.Usuario, { foreignKey: 'usuario_id', as: 'usuario' });
   }
 }
-export default Resenha;
+export default Lista;
