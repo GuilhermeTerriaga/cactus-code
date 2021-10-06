@@ -1,2 +1,2 @@
 // controla genero
-// TODO codar
+// TODO codar genero e também linkar com usuário

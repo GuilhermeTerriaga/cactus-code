@@ -1,11 +1,11 @@
 import Sequelize from 'sequelize';
 import Arquivo from '../app/models/Arquivo';
-// import Listas from '../app/models/Listas';
+import Lista from '../app/models/Lista';
 import Resenha from '../app/models/Resenha';
 import Usuario from '../app/models/Usuario';
 import databaseConfig from '../config/database';
 
-const models = [Usuario, Arquivo, Resenha];
+const models = [Usuario, Lista, Arquivo, Resenha];
 
 class Database {
   constructor() {
