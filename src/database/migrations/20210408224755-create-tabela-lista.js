@@ -32,6 +32,3 @@ module.exports = {
     await queryInterface.dropTable('listas');
   },
 };
-
-// migração de dados -> ORM {Models do meu código diretamente com o banco de dados}
-// Asincrono = async, await

@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import Listas from '../models/Listas';
+import Lista from '../models/Lista';
 
 class ControllerListas {
   async store(req, res) {
@@ -13,7 +13,7 @@ class ControllerListas {
       });
     }
 
-    const { titulo, corpo, usuarioId } = await Listas.create(req.body);
+    const { titulo, corpo, usuarioId } = await Lista.create(req.body);
 
     return res.json({
       titulo,
