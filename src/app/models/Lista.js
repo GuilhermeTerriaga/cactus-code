@@ -17,6 +17,11 @@ class Lista extends Model {
 
   static associate(models) {
     this.belongsTo(models.Usuario, { foreignKey: 'usuario_id', as: 'usuario' });
+    this.belongsToMany(models.Filme, {
+      as: 'Filme',
+      through: 'lista_filme',
+      foreignKey: 'lista_id',
+    });
   }
 }
 export default Lista;
