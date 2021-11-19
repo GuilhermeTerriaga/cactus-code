@@ -74,14 +74,14 @@ class ControllerUsuario {
     if (email !== usuario.email) {
       const usuarioExistente = await Usuario.findOne({ where: { email } });
       if (usuarioExistente) {
-        return res.status(400).json({ erro: 'Usuario já existente' });
+        return res.status(400).json({ erro: 'Email de usuario já existente' });
       }
     } else if (emailSecundario !== usuario.emailSecundario) {
       const usuarioExistente = await Usuario.findOne({
         where: { emailSecundario },
       });
       if (usuarioExistente) {
-        return res.status(400).json({ erro: 'Usuario já existente' });
+        return res.status(400).json({ erro: 'Email de usuario já existente' });
       }
     }
     if (senhaAntiga && !(await usuario.verificarSenha(senhaAntiga))) {
@@ -176,7 +176,7 @@ class ControllerUsuario {
         {
           model: Arquivo,
           as: 'avatar',
-          attributes: ['url'],
+          attributes: ['nome', 'caminho', 'url'],
         },
       ],
     });
