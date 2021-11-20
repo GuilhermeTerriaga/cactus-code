@@ -1,4 +1,5 @@
 import Arquivo from '../models/Arquivo';
+import Usuario from '../models/Usuario';
 
 class ControllerArquivo {
   async store(req, res) {
@@ -8,6 +9,9 @@ class ControllerArquivo {
       nome,
       caminho,
     });
+    const usuario = await Usuario.findByPk(req.usuarioId);
+    const arq = { arquivo_id: arquivo.id };
+    await usuario.update(arq);
     return res.json(arquivo);
   }
 }
