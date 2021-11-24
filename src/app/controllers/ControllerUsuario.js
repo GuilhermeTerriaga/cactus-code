@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
 import * as Yup from 'yup';
 import autConfig from '../../config/auth';
 import Arquivo from '../models/Arquivo';
@@ -144,8 +145,9 @@ class ControllerUsuario {
       return res.status(400).json({ error: 'Erro na validação dos dados' });
     }
     const { apelido } = req.body;
-    const usuario = await Usuario.findOne({
-      where: { apelido },
+    const busca = `${apelido}%`;
+    const usuario = await Usuario.findAll({
+      where: { apelido: { [Op.iLike]: busca } },
       attributes: ['id', 'apelido', 'email', 'arquivo_id'],
       include: [
         {
@@ -158,6 +160,7 @@ class ControllerUsuario {
     if (usuario === null) {
       return res.status(400).json({ erro: 'Usuário não existente' });
     }
+
     return res.json(usuario);
   }
 

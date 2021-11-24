@@ -3,7 +3,6 @@ import { promisify } from 'util';
 import autConfig from '../../config/auth';
 
 export default async (req, res, next) => {
-  console.log(req.headers);
   const autHeader = req.headers.authorization;
   if (!autHeader) {
     return res.status(401).json({ error: 'Token não enviado' });
