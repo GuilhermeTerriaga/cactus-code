@@ -33,7 +33,7 @@ routes.put('/users', ControllerUsuario.update); // atualizar os proprios dados
 
 routes.get('/users/show', ControllerUsuario.show); // visualiza apenas ele mesmo
 
-routes.get('/users/search', ControllerUsuario.search); // visualiza apenas um, o que ele buscar
+routes.post('/users/search', ControllerUsuario.search); // visualiza apenas um, o que ele buscar
 
 routes.post('/files', upload.single('arquivo'), ControllerArquivo.store);
 
