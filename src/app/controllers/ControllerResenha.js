@@ -24,6 +24,7 @@ class ControllerResenha {
       titulo,
       corpo,
       nota,
+      tmdbId, // 1 p/ n dentro de resenha para filme, Um filme para N resenhas
       usuarioId,
     });
   }

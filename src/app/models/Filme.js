@@ -3,7 +3,7 @@ import Sequelize, { Model } from 'sequelize';
 class Filme extends Model {
   static init(sequelize) {
     super.init(
-      { nome: Sequelize.STRING, url: Sequelize.STRING },
+      { tmdbId: Sequelize.STRING },
       { sequelize, tableName: 'filmes' }
     );
     return this;
