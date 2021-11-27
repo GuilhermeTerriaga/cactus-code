@@ -1,5 +1,5 @@
 module.exports = {
   up: async (queryInterface) => {
-    await queryInterface.removeColumn('lista', 'usuario_id');
+    await queryInterface.removeColumn('listas', 'usuario_id');
   },
 };
