@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 import { Op } from 'sequelize';
 import * as Yup from 'yup';
 import autConfig from '../../config/auth';
+import mail from '../../config/mail';
 import Arquivo from '../models/Arquivo';
 import Usuario from '../models/Usuario';
 
@@ -188,6 +190,71 @@ class ControllerUsuario {
     }
     return res.json(usuario);
   }
+
+  async recover(req, res) {
+    const schema = Yup.object().shape({
+      email: Yup.string().email(),
+      emailSecundario: Yup.string().email(),
+      personagemFav: Yup.string().required(),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ erro: 'Erro na validação dos dados' });
+    }
+    const { email, emailSecundario, personagemFav } = req.body;
+    const usuario = await Usuario.findOne({
+      where: {
+        [Op.or]: [
+          {
+            email: {
+              [Op.eq]: email,
+            },
+          },
+          {
+            apelido: {
+              [Op.eq]: emailSecundario,
+            },
+          },
+        ],
+      },
+    });
+    if (usuario === null || usuario.personagemFav !== personagemFav) {
+      return res.status(401).json({ erro: 'Erro na validação dos dados' });
+    }
+    const { id } = usuario;
+    const token = jwt.sign({ id }, autConfig.secret, {
+      expiresIn: autConfig.recoverexpiresIn,
+    });
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: mail.mail,
+        pass: mail.pass,
+      },
+    });
+    const mensagem = mail.html.replace(
+      /REPLACE/g,
+      `${mail.link}?token=${token}`
+    );
+    const mailOptions = {
+      from: mail.mail, // sender address
+      to: [usuario.email, usuario.emailSecundario], // receiver (use array of string for a list)
+      subject: mail.subject, // Subject line
+      html: mensagem, // plain text body
+    };
+    await transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log('erro: ', err);
+        return res.status(400);
+      }
+      console.log('info: ', info);
+      return res.status(200);
+    });
+    return res.status(200);
+  }
 }
+
+// async newPassword(){
+
+// }
 
 export default new ControllerUsuario();
