@@ -251,10 +251,27 @@ class ControllerUsuario {
     });
     return res.status(200);
   }
+
+  async newPassword(req, res) {
+    const schema = Yup.object().shape({
+      senha: Yup.string().min(8).required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ erro: 'Erro na validação dos dados' });
+    }
+
+    const usuario = await Usuario.findByPk(req.usuarioId);
+    if (usuario === null) {
+      return res
+        .status(401)
+        .json({ erro: 'Erro na validação dos dados, token invalido' });
+    }
+    await usuario.update(req.body);
+    return res.status(200).json({
+      sucesso: 'Senha redefinida',
+    });
+  }
 }
-
-// async newPassword(){
-
-// }
 
 export default new ControllerUsuario();
