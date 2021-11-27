@@ -19,12 +19,17 @@ routes.post('/melhorTime', (req, res) => {
   return res.json({ 'melhor time': 'São Paulo Futebol Clube é claro!' });
 });
 routes.post('/users', ControllerUsuario.store); // se cadastrar
+
 routes.post('/sessions', SessionController.store); // Logar
 
 routes.get('/users', ControllerUsuario.index); // mostra todos os usuários do sistema
+
 routes.post('/users/forgotpassword', ControllerUsuario.recover);
 // a partir do use(autMiddleware) necessitará
 routes.use(autMiddleware);
+
+routes.put('/users/newpass', ControllerUsuario.newPassword); // Seta nova senha
+
 routes.post('/list', ControllerListas.store); // Guarda Listas
 
 routes.post('/review', ControllerResenha.store); // Guarda Resenha
