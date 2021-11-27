@@ -1,21 +1,9 @@
-'use strict';
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
+  up: async (queryInterface) => {
+    return Promise.all([
+      queryInterface.removeColumn('usuarios', 'genero_id'),
+      queryInterface.dropTable('listas'),
+      queryInterface.dropTable('genero_cinematograficos'),
+    ]);
   },
-
-  down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  }
 };
