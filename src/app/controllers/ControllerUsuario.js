@@ -17,6 +17,7 @@ class ControllerUsuario {
       dtNascimento: Yup.date().required(),
       emailSecundario: Yup.string().email().required(),
       senha: Yup.string().required().min(8),
+      generoCinematografico: Yup.string().required().min(8),
       arquivo_id: Yup.number().integer(),
     });
     if (!(await schema.isValid(req.body))) {
@@ -241,14 +242,16 @@ class ControllerUsuario {
       subject: mail.subject, // Subject line
       html: mensagem, // plain text body
     };
-    await transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log('erro: ', err);
+    await transporter.sendMail(mailOptions).then(
+      (sentMessage) => {
+        console.log(sentMessage);
+        return res.status(200);
+      },
+      (error) => {
+        console.log(error);
         return res.status(400);
       }
-      console.log('info: ', info);
-      return res.status(200);
-    });
+    );
     return res.status(200);
   }
 
