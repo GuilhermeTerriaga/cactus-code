@@ -22,7 +22,7 @@ routes.post('/users', ControllerUsuario.store); // se cadastrar
 routes.post('/sessions', SessionController.store); // Logar
 
 routes.get('/users', ControllerUsuario.index); // mostra todos os usuários do sistema
-
+routes.post('/users/forgotpassword', ControllerUsuario.recover);
 // a partir do use(autMiddleware) necessitará
 routes.use(autMiddleware);
 routes.post('/list', ControllerListas.store); // Guarda Listas
@@ -33,7 +33,7 @@ routes.put('/users', ControllerUsuario.update); // atualizar os proprios dados
 
 routes.get('/users/show', ControllerUsuario.show); // visualiza apenas ele mesmo
 
-routes.get('/users/search', ControllerUsuario.search); // visualiza apenas um, o que ele buscar
+routes.post('/users/search', ControllerUsuario.search); // visualiza apenas um, o que ele buscar
 
 routes.post('/files', upload.single('arquivo'), ControllerArquivo.store);
 

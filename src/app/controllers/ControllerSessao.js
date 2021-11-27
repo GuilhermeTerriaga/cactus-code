@@ -14,7 +14,7 @@ class ControllerSessao {
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
-        erro: 'Erro na validação dos dados enviados, manda direito Gu!',
+        erro: 'Erro na validação dos dados',
       });
     }
     const { email, senha, apelido } = req.body;
