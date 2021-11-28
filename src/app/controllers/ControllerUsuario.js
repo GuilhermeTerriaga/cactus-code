@@ -64,7 +64,7 @@ class ControllerUsuario {
       personagemFav: Yup.string(),
       dtNascimento: Yup.date(),
       senhaAntiga: Yup.string().min(8),
-      genero: Yup.string().required(),
+      genero: Yup.string(),
       senha: Yup.string()
         .min(6)
         .when('senhaAntiga', (senhaAntiga, campo) =>
@@ -247,7 +247,7 @@ class ControllerUsuario {
       `${mail.link}?token=${token}`
     );
     const mailOptions = {
-      from: mail.mail, // sender address
+      from: mail.from, // sender address
       to: [usuario.email, usuario.emailSecundario], // receiver (use array of string for a list)
       subject: mail.subject, // Subject line
       html: mensagem, // plain text body
@@ -255,14 +255,14 @@ class ControllerUsuario {
     await transporter.sendMail(mailOptions).then(
       (sentMessage) => {
         console.log(sentMessage);
-        return res.status(200);
+        // return res.status(200).json({ successo: 'email enviado' });
       },
       (error) => {
         console.log(error);
-        return res.status(400);
+        return res.status(400).json({ erro: 'email não enviado' });
       }
     );
-    return res.status(200);
+    return res.status(200).json({ success: 'email enviado' });
   }
 
   async newPassword(req, res) {
