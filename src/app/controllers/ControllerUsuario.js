@@ -186,6 +186,7 @@ class ControllerUsuario {
         'dtNascimento',
         'emailSecundario',
         'personagemFav',
+        'genero',
       ],
       include: [
         {
