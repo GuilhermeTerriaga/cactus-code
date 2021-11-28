@@ -41,7 +41,27 @@ class ControllerUsuario {
       dtNascimento,
       genero,
     } = await Usuario.create(req.body);
-
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: mail.mail,
+        pass: mail.pass,
+      },
+    });
+    const mailOptions = {
+      from: mail.from, // sender address
+      to: [email, emailSecundario], // receiver (use array of string for a list)
+      subject: mail.subjectNewUser, // Subject line
+      html: mail.mailNewUser, // plain text body
+    };
+    await transporter.sendMail(mailOptions).then(
+      (sentMessage) => {
+        console.log(sentMessage);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     return res.json({
       id,
       apelido,
@@ -242,20 +262,19 @@ class ControllerUsuario {
         pass: mail.pass,
       },
     });
-    const mensagem = mail.html.replace(
+    const mensagem = mail.htmlRecover.replace(
       /REPLACE/g,
       `${mail.link}?token=${token}`
     );
     const mailOptions = {
       from: mail.from, // sender address
       to: [usuario.email, usuario.emailSecundario], // receiver (use array of string for a list)
-      subject: mail.subject, // Subject line
+      subject: mail.subjectRecover, // Subject line
       html: mensagem, // plain text body
     };
     await transporter.sendMail(mailOptions).then(
       (sentMessage) => {
         console.log(sentMessage);
-        // return res.status(200).json({ successo: 'email enviado' });
       },
       (error) => {
         console.log(error);
