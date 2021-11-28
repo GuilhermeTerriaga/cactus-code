@@ -64,6 +64,7 @@ class ControllerUsuario {
       personagemFav: Yup.string(),
       dtNascimento: Yup.date(),
       senhaAntiga: Yup.string().min(8),
+      genero: Yup.string().required(),
       senha: Yup.string()
         .min(6)
         .when('senhaAntiga', (senhaAntiga, campo) =>
@@ -105,6 +106,7 @@ class ControllerUsuario {
       arquivo_id,
       personagemFav,
       dtNascimento,
+      genero,
     } = await Usuario.findByPk(req.usuarioId, {
       include: [
         {
@@ -121,6 +123,7 @@ class ControllerUsuario {
       apelido,
       email,
       arquivo_id,
+      genero,
     });
   }
 
