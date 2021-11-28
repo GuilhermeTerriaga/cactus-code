@@ -10,6 +10,7 @@ import Usuario from '../models/Usuario';
 
 class ControllerUsuario {
   async store(req, res) {
+    console.log(req.body);
     const schema = Yup.object().shape({
       apelido: Yup.string().required(),
       personagemFav: Yup.string().required(),
@@ -17,7 +18,7 @@ class ControllerUsuario {
       dtNascimento: Yup.date().required(),
       emailSecundario: Yup.string().email().required(),
       senha: Yup.string().required().min(8),
-      generoCinematografico: Yup.string().required().min(8),
+      genero: Yup.string().required(),
       arquivo_id: Yup.number().integer(),
     });
     if (!(await schema.isValid(req.body))) {
@@ -33,9 +34,13 @@ class ControllerUsuario {
     if (usuarioExistente) {
       return res.status(400).json({ erro: 'Usuário já existente' });
     }
-    const { id, apelido, personagemFav, dtNascimento } = await Usuario.create(
-      req.body
-    );
+    const {
+      id,
+      apelido,
+      personagemFav,
+      dtNascimento,
+      genero,
+    } = await Usuario.create(req.body);
 
     return res.json({
       id,
@@ -44,6 +49,7 @@ class ControllerUsuario {
       token: jwt.sign({ id }, autConfig.secret, {
         expiresIn: autConfig.expiresIn,
       }),
+      genero,
       emailSecundario,
       personagemFav,
       dtNascimento,
@@ -58,6 +64,7 @@ class ControllerUsuario {
       personagemFav: Yup.string(),
       dtNascimento: Yup.date(),
       senhaAntiga: Yup.string().min(8),
+      genero: Yup.string().required(),
       senha: Yup.string()
         .min(6)
         .when('senhaAntiga', (senhaAntiga, campo) =>
@@ -99,6 +106,7 @@ class ControllerUsuario {
       arquivo_id,
       personagemFav,
       dtNascimento,
+      genero,
     } = await Usuario.findByPk(req.usuarioId, {
       include: [
         {
@@ -115,6 +123,7 @@ class ControllerUsuario {
       apelido,
       email,
       arquivo_id,
+      genero,
     });
   }
 
