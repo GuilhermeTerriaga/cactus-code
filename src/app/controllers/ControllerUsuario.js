@@ -40,6 +40,7 @@ class ControllerUsuario {
       personagemFav,
       dtNascimento,
       genero,
+      isAdmin,
     } = await Usuario.create(req.body);
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -70,6 +71,7 @@ class ControllerUsuario {
         expiresIn: autConfig.expiresIn,
       }),
       genero,
+      isAdmin,
       emailSecundario,
       personagemFav,
       dtNascimento,
@@ -281,7 +283,7 @@ class ControllerUsuario {
         return res.status(400).json({ erro: 'email não enviado' });
       }
     );
-    return res.status(200).json({ success: 'email enviado' });
+    return res.status(200).json({ successo: 'email enviado' });
   }
 
   async newPassword(req, res) {
