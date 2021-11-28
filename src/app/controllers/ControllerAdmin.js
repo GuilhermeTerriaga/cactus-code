@@ -8,55 +8,44 @@ import mail from '../../config/mail';
 import Arquivo from '../models/Arquivo';
 import Usuario from '../models/Usuario';
 
-class ControllerUsuario {
-  async store(req, res) {
-    console.log(req.body);
+class ControllerAdmin {
+  async deleteUser(req, res) {
     const schema = Yup.object().shape({
-      apelido: Yup.string().required(),
-      personagemFav: Yup.string().required(),
+      apelido: Yup.string(),
       email: Yup.string().email().required(),
-      dtNascimento: Yup.date().required(),
-      emailSecundario: Yup.string().email().required(),
-      senha: Yup.string().required().min(8),
-      genero: Yup.string().required(),
-      arquivo_id: Yup.number().integer(),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
     }
-    const usuarioExistente = await Usuario.findOne({
-      where: { email: req.body.email },
+    const { email, apelido } = req.body;
+    const usuario = await Usuario.findOne({
+      where: {
+        [Op.or]: [
+          {
+            email: {
+              [Op.eq]: email,
+            },
+          },
+          {
+            apelido: {
+              [Op.eq]: apelido,
+            },
+          },
+        ],
+      },
     });
-    const { emailSecundario, email } = req.body;
-    if (emailSecundario === email) {
-      return res.status(400).json({ erro: 'Erro na validação dos dados' });
+    if (usuario === null) {
+      return res.status(401).json({ erro: 'Usuario não existe!' });
     }
-    if (usuarioExistente) {
-      return res.status(400).json({ erro: 'Usuário já existente' });
-    }
-    const {
-      id,
-      apelido,
-      personagemFav,
-      dtNascimento,
-      genero,
-    } = await Usuario.create(req.body);
-
-    return res.json({
-      id,
-      apelido,
-      email,
-      token: jwt.sign({ id }, autConfig.secret, {
-        expiresIn: autConfig.expiresIn,
-      }),
-      genero,
-      emailSecundario,
-      personagemFav,
-      dtNascimento,
+    const { id } = usuario.id;
+    await usuario.destroy({ where: { id } }).then(() => {
+      return res.status(200);
     });
+    return res.json(apelido);
   }
+  // find by pk para deletar resenha
 
-  async update(req, res) {
+  async deleteResenha(req, res) {
     const schema = Yup.object().shape({
       apelido: Yup.string(),
       email: Yup.string().email().required(),
@@ -64,7 +53,7 @@ class ControllerUsuario {
       personagemFav: Yup.string(),
       dtNascimento: Yup.date(),
       senhaAntiga: Yup.string().min(8),
-      genero: Yup.string(),
+      genero: Yup.string().required(),
       senha: Yup.string()
         .min(6)
         .when('senhaAntiga', (senhaAntiga, campo) =>
@@ -247,7 +236,7 @@ class ControllerUsuario {
       `${mail.link}?token=${token}`
     );
     const mailOptions = {
-      from: mail.from, // sender address
+      from: mail.mail, // sender address
       to: [usuario.email, usuario.emailSecundario], // receiver (use array of string for a list)
       subject: mail.subject, // Subject line
       html: mensagem, // plain text body
@@ -255,14 +244,14 @@ class ControllerUsuario {
     await transporter.sendMail(mailOptions).then(
       (sentMessage) => {
         console.log(sentMessage);
-        // return res.status(200).json({ successo: 'email enviado' });
+        return res.status(200);
       },
       (error) => {
         console.log(error);
-        return res.status(400).json({ erro: 'email não enviado' });
+        return res.status(400);
       }
     );
-    return res.status(200).json({ success: 'email enviado' });
+    return res.status(200);
   }
 
   async newPassword(req, res) {
@@ -287,4 +276,4 @@ class ControllerUsuario {
   }
 }
 
-export default new ControllerUsuario();
+export default new ControllerAdmin();

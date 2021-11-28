@@ -1,5 +1,6 @@
 export default {
   mail: 'cinefypfc@gmail.com',
+  from: 'Equipe Cinefy<cinefypfc@gmail.com>',
   pass: 'ALKn3qFzP8whLer',
   subject: 'Recuperação de senha', // Subject line
   html:
