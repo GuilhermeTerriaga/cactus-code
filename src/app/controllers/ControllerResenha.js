@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
+import Arquivo from '../models/Arquivo';
 import Filme from '../models/Filme';
 import Resenha from '../models/Resenha';
+import Usuario from '../models/Usuario';
 
 class ControllerResenha {
   async store(req, res) {
@@ -78,12 +80,24 @@ class ControllerResenha {
 
   async index(req, res) {
     const resenha = await Resenha.findAll({
-      attributes: ['id', 'titulo', 'corpo', 'nota'],
+      attributes: ['id', 'titulo', 'corpo', 'nota', 'veredito'],
       include: [
         {
           model: Filme,
           as: 'filme',
           attributes: ['tmdbId'],
+        },
+        {
+          model: Usuario,
+          as: 'usuario',
+          attributes: ['apelido'],
+          include: [
+            {
+              model: Arquivo,
+              as: 'avatar',
+              attributes: ['caminho', 'url'],
+            },
+          ],
         },
       ],
     });
