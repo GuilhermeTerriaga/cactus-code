@@ -74,8 +74,20 @@ class ControllerResenha {
         ],
       },
     });
+  }
 
-    // console.dir(id);
+  async index(req, res) {
+    const resenha = await Resenha.findAll({
+      attributes: ['id', 'titulo', 'corpo', 'nota'],
+      include: [
+        {
+          model: Filme,
+          as: 'filme',
+          attributes: ['tmdbId'],
+        },
+      ],
+    });
+    return res.json(resenha);
   }
 }
 export default new ControllerResenha();

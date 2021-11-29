@@ -151,6 +151,7 @@ class ControllerUsuario {
 
   async index(req, res) {
     const usuario = await Usuario.findAll({
+      where: { isAdmin: false },
       attributes: [
         'id',
         'apelido',
@@ -159,6 +160,7 @@ class ControllerUsuario {
         'dtNascimento',
         'emailSecundario',
         'personagemFav',
+        'genero',
       ],
       include: [
         {

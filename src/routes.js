@@ -41,6 +41,8 @@ routes.post('/list', ControllerListas.store); // Guarda Listas
 
 routes.post('/review', ControllerResenha.store); // Guarda Resenha
 
+routes.get('/review', ControllerResenha.index); // Get resenhas
+
 routes.put('/users', ControllerUsuario.update); // atualizar os proprios dados
 
 routes.get('/users/show', ControllerUsuario.show); // visualiza apenas ele mesmo
