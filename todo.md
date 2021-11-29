@@ -5,6 +5,6 @@ TO-DO:filme -> classe com campo url ok
         through: 'tabela virtual',
         foreignKey: 'Parent_parentId'
 })
-N filmes, n resenhas
+1 filme, n resenhas
 
 

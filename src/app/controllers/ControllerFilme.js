@@ -4,7 +4,7 @@ import Filme from '../models/Filme';
 class ControllerListas {
   async store(req, res) {
     const schema = Yup.object().shape({
-      nome: Yup.string().required(),
+      tmdbId: Yup.string().required(),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({
@@ -12,11 +12,10 @@ class ControllerListas {
       });
     }
 
-    const { nome, url } = await Filme.create(req.body);
+    const { tmdbId } = await Filme.create(req.body);
 
     return res.json({
-      nome,
-      url,
+      tmdbId,
     });
   }
 }
