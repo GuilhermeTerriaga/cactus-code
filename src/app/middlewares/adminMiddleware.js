@@ -17,6 +17,10 @@ export default async (req, res, next) => {
       autConfig.secret,
       isAdmin
     );
+    if (!senhaDecodificada.isAdmin) {
+      return res.status(401).json({ error: 'Token invalido' });
+    }
+    console.log(senhaDecodificada);
     req.body.usuario_id = senhaDecodificada.id;
     req.usuarioId = senhaDecodificada.id;
     return next();

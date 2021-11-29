@@ -91,7 +91,13 @@ class ControllerSessao {
             },
           },
         ],
-        [Op.and]: [{ isAdmin: true }],
+        [Op.and]: [
+          {
+            isAdmin: {
+              [Op.eq]: true,
+            },
+          },
+        ],
       },
     });
 
