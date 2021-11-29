@@ -308,6 +308,19 @@ class ControllerUsuario {
       sucesso: 'Senha redefinida',
     });
   }
+
+  async delete(req, res) {
+    const usuario = await Usuario.findByPk(req.usuarioId);
+    if (usuario === null) {
+      return res.status(401).json({ erro: 'Usuario não existe!' });
+    }
+    const { id } = usuario.id;
+    const exid = usuario.id;
+    await usuario.destroy({ where: { id } }).then(() => {
+      console.log(`usuario de id ${exid} deletado!`);
+    });
+    return res.status(200).json({ sucesso: 'Usuário deletado' });
+  }
 }
 
 export default new ControllerUsuario();
