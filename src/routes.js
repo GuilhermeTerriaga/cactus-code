@@ -7,7 +7,6 @@ import ControllerResenha from './app/controllers/ControllerResenha';
 import SessionController from './app/controllers/ControllerSessao';
 // import das controladoras
 import ControllerUsuario from './app/controllers/ControllerUsuario';
-import adminMiddleware from './app/middlewares/adminMiddleware';
 // import do middleware
 import autMiddleware from './app/middlewares/autMiddleware';
 import multerConfig from './config/multer';
@@ -27,6 +26,8 @@ routes.post('/sessions', SessionController.store); // Logar
 routes.get('/users', ControllerUsuario.index); // mostra todos os usuários do sistema
 
 routes.post('/users/forgotpassword', ControllerUsuario.recover);
+
+routes.post('/admin/sessions', SessionController.storeAdmin); // Admin Logar
 // a partir do use(autMiddleware) necessitará
 routes.use(autMiddleware);
 
@@ -43,8 +44,6 @@ routes.get('/users/show', ControllerUsuario.show); // visualiza apenas ele mesmo
 routes.post('/users/search', ControllerUsuario.search); // visualiza apenas um, o que ele buscar
 
 routes.post('/files', upload.single('arquivo'), ControllerArquivo.store);
-
-routes.use(adminMiddleware);
 
 routes.delete('/admin/delete/user', ControllerAdmin.deleteResenha); // Admin deleta resenha
 
