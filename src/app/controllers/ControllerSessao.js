@@ -63,6 +63,64 @@ class ControllerSessao {
       }),
     });
   }
+
+  async storeAdmin(req, res) {
+    const schema = Yup.object().shape({
+      email: Yup.string().email(),
+      apelido: Yup.string(),
+      senha: Yup.string().required(),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({
+        erro: 'Erro na validação dos dados',
+      });
+    }
+    const { email, senha, apelido } = req.body;
+
+    const usuario = await Usuario.findOne({
+      where: {
+        [Op.or]: [
+          {
+            email: {
+              [Op.eq]: email,
+            },
+          },
+          {
+            apelido: {
+              [Op.eq]: apelido,
+            },
+          },
+        ],
+        [Op.and]: [
+          {
+            isAdmin: {
+              [Op.eq]: true,
+            },
+          },
+        ],
+      },
+    });
+
+    if (!usuario) {
+      return res.status(401).json({ error: 'Usuário não encontrado' });
+    }
+    if (!(await usuario.verificarSenha(senha))) {
+      return res.status(401).json({ erro: 'Senhas não batem' });
+    }
+    const { id, isAdmin } = usuario;
+
+    return res.json({
+      usuario: {
+        id,
+        apelido,
+        email,
+        isAdmin,
+      },
+      token: jwt.sign({ id, isAdmin }, autConfig.secret, {
+        expiresIn: autConfig.expiresIn,
+      }),
+    });
+  }
 }
 
 export default new ControllerSessao();

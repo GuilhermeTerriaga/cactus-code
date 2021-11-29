@@ -9,7 +9,7 @@ class ControllerAdmin {
   async deleteUser(req, res) {
     const schema = Yup.object().shape({
       apelido: Yup.string(),
-      email: Yup.string().email().required(),
+      email: Yup.string().email(),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
@@ -35,8 +35,9 @@ class ControllerAdmin {
       return res.status(401).json({ erro: 'Usuario não existe!' });
     }
     const { id } = usuario.id;
+    const exid = usuario.id;
     await usuario.destroy({ where: { id } }).then(() => {
-      return res.status(200).json({ sucesso: 'Usuário deletado' });
+      console.log(`usuario de id ${exid} deletado!`);
     });
     return res.status(200).json({ sucesso: 'Usuário deletado' });
   }
