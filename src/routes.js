@@ -7,6 +7,7 @@ import ControllerResenha from './app/controllers/ControllerResenha';
 import SessionController from './app/controllers/ControllerSessao';
 // import das controladoras
 import ControllerUsuario from './app/controllers/ControllerUsuario';
+import adminMiddleware from './app/middlewares/adminMiddleware';
 // import do middleware
 import autMiddleware from './app/middlewares/autMiddleware';
 import multerConfig from './config/multer';
@@ -45,8 +46,9 @@ routes.post('/users/search', ControllerUsuario.search); // visualiza apenas um, 
 
 routes.post('/files', upload.single('arquivo'), ControllerArquivo.store);
 
+routes.use(adminMiddleware);
 routes.delete('/admin/delete/user', ControllerAdmin.deleteResenha); // Admin deleta resenha
 
-routes.put('/admin/delete/resenha', ControllerAdmin.deleteUser); // Admin deleta usuário
+routes.delete('/admin/delete/resenha', ControllerAdmin.deleteUser); // Admin deleta usuário
 
 module.exports = routes;

@@ -101,15 +101,16 @@ class ControllerSessao {
     if (!(await usuario.verificarSenha(senha))) {
       return res.status(401).json({ erro: 'Senhas não batem' });
     }
-    const { id } = usuario;
+    const { id, isAdmin } = usuario;
 
     return res.json({
       usuario: {
         id,
         apelido,
         email,
+        isAdmin,
       },
-      token: jwt.sign({ id }, autConfig.secret, {
+      token: jwt.sign({ id, isAdmin }, autConfig.secret, {
         expiresIn: autConfig.expiresIn,
       }),
     });
