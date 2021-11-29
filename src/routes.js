@@ -52,7 +52,7 @@ routes.post('/users/search', ControllerUsuario.search); // visualiza apenas um, 
 routes.post('/files', upload.single('arquivo'), ControllerArquivo.store);
 
 routes.use(adminMiddleware);
-routes.delete('/admin/delete/resenha', ControllerAdmin.deleteResenha); // Admin deleta resenha
+routes.delete('/admin/delete/review', ControllerAdmin.deleteResenha); // Admin deleta resenha
 
 routes.delete('/admin/delete/user', ControllerAdmin.deleteUser); // Admin deleta usuário
 
