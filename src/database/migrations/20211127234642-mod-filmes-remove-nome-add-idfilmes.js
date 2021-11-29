@@ -8,17 +8,8 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true,
-        unique: true,
+        unique: false,
       }),
     ]);
   },
-
-  // down: async (queryInterface, Sequelize) => {
-  //   /**
-  //    * Add reverting commands here.
-  //    *
-  //    * Example:
-  //    * await queryInterface.dropTable('users');
-  //    */
-  // },
 };

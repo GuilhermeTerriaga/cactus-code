@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import ControllerAdmin from './app/controllers/ControllerAdmin';
 import ControllerArquivo from './app/controllers/ControllerArquivo';
+import ControllerFilme from './app/controllers/ControllerFilme';
 import ControllerListas from './app/controllers/ControllerListas';
 import ControllerResenha from './app/controllers/ControllerResenha';
 import SessionController from './app/controllers/ControllerSessao';
@@ -31,6 +32,8 @@ routes.post('/users/forgotpassword', ControllerUsuario.recover);
 routes.post('/admin/sessions', SessionController.storeAdmin); // Admin Logar
 // a partir do use(autMiddleware) necessitará
 routes.use(autMiddleware);
+
+routes.post('/movies', ControllerFilme.store); // se cadastrar
 
 routes.put('/users/newpass', ControllerUsuario.newPassword); // Seta nova senha
 

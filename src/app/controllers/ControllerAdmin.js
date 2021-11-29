@@ -2,6 +2,7 @@
 import { Op } from 'sequelize';
 import * as Yup from 'yup';
 import Arquivo from '../models/Arquivo';
+import Filme from '../models/Filme';
 import Resenha from '../models/Resenha';
 import Usuario from '../models/Usuario';
 
@@ -52,13 +53,13 @@ class ControllerAdmin {
       return res.status(400).json({ erro: 'Erro na validação dos dados' });
     }
     const { id } = req.body;
-
     const resenha = await Resenha.findByPk(id);
+    const exid = resenha.id;
     if (!resenha) {
       return res.status(400).json({ erro: 'Resenha inexistente' });
     }
     await resenha.destroy({ where: { id } }).then(() => {
-      return res.status(200).json({ sucesso: 'Resenha deletada' });
+      console.log(`resenha de id ${exid} deletada!`);
     });
     return res.status(200).json({ sucesso: 'Resenha deletada' });
   }
@@ -73,6 +74,7 @@ class ControllerAdmin {
         'dtNascimento',
         'emailSecundario',
         'personagemFav',
+        'genero',
       ],
       include: [
         {
@@ -83,6 +85,20 @@ class ControllerAdmin {
       ],
     });
     return res.json(usuario);
+  }
+
+  async indexResenha(req, res) {
+    const resenha = await Resenha.findAll({
+      attributes: ['id', 'titulo', 'corpo', 'nota'],
+      include: [
+        {
+          model: Filme,
+          as: 'filme',
+          attributes: ['tmdbId'],
+        },
+      ],
+    });
+    return res.json(resenha);
   }
 }
 

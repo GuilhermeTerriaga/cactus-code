@@ -8,12 +8,5 @@ class Filme extends Model {
     );
     return this;
   }
-
-  static associate(models) {
-    this.belongsToMany(models.Lista, {
-      through: 'lista_filme',
-      foreignKey: 'filme_id',
-    });
-  }
 }
 export default Filme;

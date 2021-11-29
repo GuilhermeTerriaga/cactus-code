@@ -18,6 +18,7 @@ class Resenha extends Model {
 
   static associate(models) {
     this.belongsTo(models.Usuario, { foreignKey: 'usuario_id', as: 'usuario' });
+    this.belongsTo(models.Filme, { foreignKey: 'filmes_id', as: 'filme' });
   }
 }
 export default Resenha;
