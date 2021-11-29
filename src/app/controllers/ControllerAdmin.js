@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
 import { Op } from 'sequelize';
 import * as Yup from 'yup';
-import Arquivo from '../models/Arquivo';
-import Filme from '../models/Filme';
 import Resenha from '../models/Resenha';
 import Usuario from '../models/Usuario';
 
@@ -62,43 +60,6 @@ class ControllerAdmin {
       console.log(`resenha de id ${exid} deletada!`);
     });
     return res.status(200).json({ sucesso: 'Resenha deletada' });
-  }
-
-  async index(req, res) {
-    const usuario = await Usuario.findAll({
-      attributes: [
-        'id',
-        'apelido',
-        'email',
-        'arquivo_id',
-        'dtNascimento',
-        'emailSecundario',
-        'personagemFav',
-        'genero',
-      ],
-      include: [
-        {
-          model: Arquivo,
-          as: 'avatar',
-          attributes: ['nome', 'caminho', 'url'],
-        },
-      ],
-    });
-    return res.json(usuario);
-  }
-
-  async indexResenha(req, res) {
-    const resenha = await Resenha.findAll({
-      attributes: ['id', 'titulo', 'corpo', 'nota'],
-      include: [
-        {
-          model: Filme,
-          as: 'filme',
-          attributes: ['tmdbId'],
-        },
-      ],
-    });
-    return res.json(resenha);
   }
 }
 
