@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import multer from 'multer';
+import ControllerAdmin from './app/controllers/ControllerAdmin';
 import ControllerArquivo from './app/controllers/ControllerArquivo';
 import ControllerListas from './app/controllers/ControllerListas';
 import ControllerResenha from './app/controllers/ControllerResenha';
 import SessionController from './app/controllers/ControllerSessao';
 // import das controladoras
 import ControllerUsuario from './app/controllers/ControllerUsuario';
+import adminMiddleware from './app/middlewares/adminMiddleware';
 // import do middleware
 import autMiddleware from './app/middlewares/autMiddleware';
 import multerConfig from './config/multer';
@@ -42,6 +44,10 @@ routes.post('/users/search', ControllerUsuario.search); // visualiza apenas um, 
 
 routes.post('/files', upload.single('arquivo'), ControllerArquivo.store);
 
-// delete
+routes.use(adminMiddleware);
+
+routes.delete('/admin/delete/user', ControllerAdmin.deleteResenha); // Admin deleta resenha
+
+routes.put('/admin/delete/resenha', ControllerAdmin.deleteUser); // Admin deleta usuário
 
 module.exports = routes;
