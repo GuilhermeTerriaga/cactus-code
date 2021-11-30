@@ -103,5 +103,43 @@ class ControllerResenha {
     });
     return res.json(resenha);
   }
+
+  async indexResenha(req, res) {
+    const { tmdbId } = req.body;
+    const filme = await Filme.findOne({
+      where: {
+        tmdb_id: tmdbId,
+      },
+    });
+    if (!filme) {
+      return res.json({ info: 'filme sem resenha' });
+    }
+    const resenha = await Resenha.findAll({
+      attributes: ['id', 'titulo', 'corpo', 'nota', 'veredito'],
+      where: {
+        filmes_id: filme.id,
+      },
+      include: [
+        {
+          model: Filme,
+          as: 'filme',
+          attributes: ['tmdbId'],
+        },
+        {
+          model: Usuario,
+          as: 'usuario',
+          attributes: ['apelido'],
+          include: [
+            {
+              model: Arquivo,
+              as: 'avatar',
+              attributes: ['caminho', 'url'],
+            },
+          ],
+        },
+      ],
+    });
+    return res.json(resenha);
+  }
 }
 export default new ControllerResenha();

@@ -42,7 +42,7 @@ routes.post('/list', ControllerListas.store); // Guarda Listas
 routes.post('/review', ControllerResenha.store); // Guarda Resenha
 
 routes.get('/review', ControllerResenha.index); // Get resenhas
-
+routes.post('/review/get', ControllerResenha.indexResenha);
 routes.put('/users', ControllerUsuario.update); // atualizar os proprios dados
 
 routes.delete('/users', ControllerUsuario.delete); // atualizar os proprios dados
