@@ -87,14 +87,7 @@ class ControllerUsuario {
       dtNascimento: Yup.date(),
       senhaAntiga: Yup.string().min(8),
       genero: Yup.string(),
-      senha: Yup.string()
-        .min(6)
-        .when('senhaAntiga', (senhaAntiga, campo) =>
-          senhaAntiga ? campo.required() : campo
-        ),
-      confirmacaoSenha: Yup.string().when('senha', (senha, campo) =>
-        senha ? campo.required().oneOf([Yup.ref('senha')]) : campo
-      ),
+      senha: Yup.string().min(6).required(),
     });
 
     if (!(await schema.isValid(req.body))) {
